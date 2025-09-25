@@ -1,0 +1,554 @@
+/*
+Theme 05 - Trek Mobi
+Text Domain: Frattus (Trek Mobi)
+*/
+
+/* onde possui a logo, barra de pesquisa e menu hamburguer será o header, mas no caso a logo irá ser incluída através do wordpress pois é um tema dinâmico 
+mas as cores a serem utilizadas, como pode ver na imagem são:
+#5D26C1
+#7E56C6
+#9B77DD
+#F2EDFA
+#59C173
+
+e pro exemplo onde está o texto vai ser utilizado a fonte Roboto e ali onde tem os textos que tem os botões LEIA MAIS é onde vai ser utilizado o conteúdo de cada post... então na verdade ali seria os posts e não esses textos estáticos como estão no wireframe, lembrando que o tema é voltado para posts, então ali é post e não texto estático.
+
+abaixo temos a parte de postagens recentes onde vai puxar as mais novas e aí onde está viagens é onde vai ser o título de categoria e abaixo onde está tecnologia também. Após vem a newsletter (se atente nos detalhes visuais que tem o divisor roxo conforme a cor que mandei acima e aí o rodapé.
+
+Então preciso dos códigos voltados para conforme eu preciso e está no print. Os códigos que me enviou antes, eu já escrevi, instalei e consegui ativar.
+
+*/
+
+:root {
+  --violet-700:#5D26C1; /* roxo */
+  --violet-600:#7E56C6; /* roxo */
+  --violet-500:#9B77DD; /* roxo */
+  --violet-50:#F2EDFA;  /* roxo claro */
+  --green-500:#59C173;  /* ✅ verde correto (2 hifens, nome padronizado) */
+  --bg:#ffffff;         /* fundo */
+  --fg:#111111;         /* texto */
+  --radius:12px;        /* raio */
+  --space-2:.5rem;      /* 8px */
+  --space-3:1rem;       /* 16px */
+  --space-4:1.5rem;     /* 24px */
+  --shadow-1:0 6px 24px rgba(0,0,0,.06); /* sombra */
+  --wrap: 1520px;  /* largura máxima do site */
+  --page-pad:clamp(16px,3vw,32px); /* padding lateral responsivo */
+}
+
+/*  Reset / Base  */
+*,*::before,*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img { max-width: 100%; display: block; display: block; }
+
+a { color: var(--violet-700); text-decoration: none; }
+
+a:hover { color: var(--violet-600); }
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/*  Layout helpers  */
+.container {                                  /* wrapper central do site */
+  width: min(100%, var(--wrap));              /* nunca passa da largura máxima */
+  margin-inline: auto;                        /* centraliza */
+  padding-inline: var(--page-pad);            /* respiro lateral responsivo */
+}
+.section { padding: var(--space-5) 0; }
+
+.section-title {
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: var(--violet-700);
+  text-align: center;
+  margin: 0 0 var(--space-4);
+}
+
+.section-divider {
+  height: 2px;
+  background: var(--violet-50);
+  border: 0;
+  margin: var(--space-5) 0;
+}
+
+/* ===== Botão LEIA MAIS — exatamente como o print ===== */
+.btn,                                    /* estilo base do botão */
+.btn-leia-mais {                          /* aplica também à classe específica usada na hero */
+  display: inline-flex;                   /* coloca texto e ícone lado a lado */
+  align-items: center;                    /* alinha verticalmente no centro */
+  gap: 12px;                              /* espaço entre o texto e a seta */
+  padding: 12px 18px;                     /* área clicável interna */
+  border: 0;                              /* sem borda */
+  border-radius: 4px;                     /* cantos retos (leve arredondado) */
+  font-weight: 700;                       /* texto em negrito */
+  text-transform: uppercase;              /* caixa alta */
+  letter-spacing: .02em;                  /* leve tracking */
+  line-height: 1;                         /* altura de linha compacta */
+  text-decoration: none;                  /* remove sublinhado */
+}
+
+.btn--primary,
+.btn--primary:link,
+.btn--primary:visited {                   /* garante branco em todos os estados de link */
+  background: var(--green-500);           /* ✅ fundo verde */
+  color: #ffffff;                         /* ✅ texto branco */
+}
+
+.btn--primary:hover {                     /* estado hover */
+  filter: brightness(.95);                /* leve escurecida no hover */
+}
+
+/* Ícone seta SEM bolinha — somente a seta branca */
+.btn--primary > span {                    /* alvo o <span> da seta */
+  color: #ffffff;                         /* ✅ seta branca */
+  background: transparent;                /* sem fundo (remove a bolinha) */
+  width: auto;                            /* sem largura fixa */
+  height: auto;                           /* sem altura fixa */
+  line-height: 1;                         /* alinha com o texto */
+  display: inline-block;                  /* comportamento inline */
+  border-radius: 0;                       /* garante sem círculo */
+  padding: 0;                             /* sem preenchimento */
+}
+
+/* versão pequena (cards da direita) */
+.btn--sm {                                /* botão compacto */
+  padding: 8px 12px;                      /* reduzido */
+  font-size: .875rem;                     /* fonte menor */
+}
+
+.post-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--violet-700);
+}
+.post-tag::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--violet-700);
+  border-radius: 2px;
+}
+
+/*  Header  */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  border-bottom: 2px solid var(--violet-50);
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+}
+
+.site-logo img { height: 44px; width: auto; }
+.header-spacer { flex: 1; }
+
+/* Search (header) */
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  border: 1px solid var(--violet-500);
+  border-radius: 0;
+  padding: 6px 10px;
+  background: var(--violet-50);
+  height: 33px;
+}
+
+.header-search input {
+  appearance: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  min-width: 260px;
+  font: inherit;
+  color: var(--fg);
+}
+
+.header-search button {
+  border: 0;
+  background: transparent;
+  color: var(--violet-700);
+  cursor: pointer;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+
+/* Hamburger */
+.hamburger {
+  margin-left: 12px;
+  inline-size: 32px;
+  block-size: 32px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+
+.hamburger .bars {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--violet-700); /* linha central */
+}
+
+.hamburger .bars::before,
+.hamburger .bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height:2px;
+  background: var(--violet-700);
+}
+
+.hamburger .bars::before { top: -7px; } /* linha de cima */
+.hamburger .bars::after  { top:  7px; } /* linha de baixo */
+
+/* Primary nav (mobile dropdown simples) */
+.primary-nav {
+  display: none;
+  padding-bottom: 1rem;
+}
+
+.primary-nav.is-open {
+  display: block;
+}
+
+.primary-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.primary-nav a {
+  display: block;
+  padding: 10px 12px;
+  border: 1px solid var(--violet-50);
+  border-radius: 10px;
+}
+
+.primary-nav a:hover {
+  border-color: var(--violet-500);
+  background: var(--violet-50);
+}
+/*  Cards de Post  */
+.post-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-3);
+  border: 1px solid var(--violet-50);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  background: #fff;
+  box-shadow: var(--shadow-1);
+}
+
+.post-card:hover { border-color: var(--violet-500); }
+.post-card__thumb { overflow: hidden; border-radius: calc(var(--radius) - 4px); }
+
+.post-card__title {
+  margin: 0 0 .35rem;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #111;
+}
+
+.post-card__meta {
+  font-size: .8rem;
+  color: var(--muted);
+  margin-bottom: .5rem;
+}
+
+.post-card__excerpt { color: #333; }
+
+/* Hero principal (grid: 2 colunas) */
+/* ===== HERO (layout e estilos) ===== */
+.container { max-width: 1440px; }                  /* 140 + 775 + 531 + 2*32 = 1510 → margem de sobra */
+.hero-layout {                                     /* grid geral da hero */
+  display: grid;                                   /* ativa grid */
+  grid-template-columns: 140px 775px 531px;        /* sidebar | destaque | direita (px do Figma) */
+  gap: 32px;                                       /* espaçamento entre colunas */
+  margin-top: 74px;                                /* conserva seu offset */
+}
+
+/* Sidebar esquerda (menu) */
+.side-nav {                             /* caixa do menu lateral */
+  border: 1px solid var(--violet-500);  /* borda roxa */
+  background: #fff;                     /* fundo branco */
+  padding: 28px 16px;                   /* respiro interno */
+}
+.side-nav__list {                       /* lista vertical */
+  list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; /* espaçamento entre itens */
+}
+.side-nav__list a {                     /* links do menu */
+  color: var(--violet-700);             /* roxo forte */
+  font-weight: 700;                     /* bold */
+  text-transform: uppercase;            /* como no Figma */
+  letter-spacing: .02em;                /* leve tracking */
+  font-size: .85rem;                    /* tamanho pequeno */
+}
+
+/* Post destaque (centro) */
+.hero-main {                            /* contêiner do destaque */
+  border: 1px solid var(--violet-50);   /* borda suave */
+  background: #fff;                     /* fundo branco */
+  box-shadow: var(--shadow-1);          /* sombra leve */
+  border-radius: var(--radius);         /* cantos suaves */
+  overflow: hidden;                     /* evita vazamento da img */
+}
+.hero-main__inner { display: grid; grid-template-rows: auto 1fr; } /* img em cima, texto embaixo */
+.hero-main__thumb img { width: 100%; height: auto; display: block; } /* destaca 775×480 → altura vira 480px */
+.hero-main__content { padding: 18px 20px 22px; }  /* padding interno do texto */
+.hero-main__title { font-size: 2.25rem; line-height: 1.15; margin: 10px 0 8px; } /* título grande */
+.hero-main__excerpt { color: #333; margin: 0 0 14px; } /* resumo como no layout */
+
+/* Coluna direita: 2 cards com borda verde */
+.hero-side { display: grid; grid-template-rows: 1fr 1fr; gap: 24px; } /* dois blocos empilhados */
+.hero-side__card {                     /* card */
+  border: 2px solid var(--green-500);  /* borda verde, bem visível */
+  background: #fff; padding: 14px;     /* respiro */
+  border-radius: 6px;                  /* canto levemente arredondado */
+}
+.hero-side__thumb { display: block; border: 1px solid var(--green-500); } /* moldura da imagem */
+.hero-side__thumb img { width: 100%; height: auto; display: block; } /* cards 531×196 → altura vira 196px */
+.hero-side__title { margin: 12px 0 10px; font-size: 1.05rem; line-height: 1.3; } /* título */
+.btn--sm { padding: .45rem .75rem; font-size: .875rem; } /* botão menor */
+
+/* Proporções visuais idênticas ao Figma (reforço) */
+.hero-main__thumb { aspect-ratio: 775 / 480; } /* caixa no aspecto 775x480 */
+.hero-side__thumb { aspect-ratio: 531 / 196; } /* caixa no aspecto 531x196 */
+.hero-main__thumb img,
+.hero-side__thumb img {
+  width: 100%;           /* ocupa toda a caixa */
+  height: 100%;          /* ocupa toda a caixa */
+  object-fit: cover;     /* recorta sem distorcer */
+}
+
+/* Responsivo (empilhar em telas menores) */
+@media (max-width: 1180px){
+  .hero-layout { grid-template-columns: 120px 1fr 380px; gap: 24px; } /* ajusta larguras */
+}
+@media (max-width: 1024px){
+  .hero-layout { grid-template-columns: 1fr; } /* empilha tudo */
+  .hero-side { grid-template-rows: none; grid-template-columns: 1fr; } /* cards viram lista */
+}
+
+/* ===== Postagens Recentes (Tema 05) ===== */
+
+.home-recent {
+  margin: 80px;
+}
+
+.section__title{
+  text-align:center;
+  font-weight:700;
+  font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.2rem);
+  color:#5D26C1; /* roxo principal */
+  margin: 0 0 1.5rem;
+}
+
+.cards-grid--recent{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 2rem;
+}
+
+@media (max-width: 1024px){
+  .cards-grid--recent{ grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 640px){
+  .cards-grid--recent{ grid-template-columns: 1fr; }
+}
+
+.card--recent{
+  border:1px solid #9B77DD;         /* borda roxa da identidade */
+  border-radius:10px;
+  padding: 1.25rem;
+  background:#fff;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.card--recent:hover{
+  box-shadow: 0 10px 22px rgba(93,38,193,.12);
+  transform: translateY(-2px);
+}
+
+.card__thumb{ display:block; margin-bottom:1rem; }
+.card__thumb img{ width:100%; height:auto; display:block; border-radius:6px; }
+
+.post-tag--recent{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  font: 600 11px/1.2 Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+  color:#5D26C1;
+  margin-bottom:.75rem;
+}
+
+/* “risco” (hífen grosso) antes do nome da categoria */
+.post-tag--recent::before{
+  content:"";
+  display:inline-block;
+  width:16px;
+  height:6px;               /* mais “grosso” */
+  background:#5D26C1;
+  border-radius:2px;
+}
+
+.card__title{ margin: .25rem 0 1.0rem; font-weight:700; }
+.card__title--center{ text-align:center; }
+.card__title a{ color:#111; text-decoration:none; }
+.card__title a:hover{ color:#5D26C1; }
+
+.card__actions{
+  display:flex;
+  justify-content:center;  /* botão centralizado */
+}
+
+/* Botão já herda o padrão do tema; reforço do verde da identidade */
+.btn--primary{
+  background:#59C173;
+  border-color:#59C173;
+  color:#fff;
+}
+.btn--primary:hover{
+  filter: brightness(0.95);
+}
+.btn--sm{ padding:.55rem 1.1rem; border-radius:8px; font-weight:600; }
+
+
+
+/*  Newsletter  */
+.newsletter {
+  padding: var(--space-5) 0;
+  border-top: 2px solid var(--violet-50);
+  border-bottom: 2px solid var(--violet-50);
+  background: #fff;
+}
+
+.newsletter__row {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.newsletter__title {
+  margin: 0 0 .25rem;
+  color: var(--violet-700);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.newsletter__desc { margin: 0; color: var(--muted); }
+.newsletter-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: .5rem;
+}
+
+.newsletter-form input[type="email"] {
+  border: 2px solid var(--violet-500);
+  border-radius: 999px;
+  padding: .65rem .9rem;
+  outline: 0;
+  font: inherit;
+}
+
+.newsletter-form button {
+  border: 0;
+  border-radius: 999px;
+  padding: .7rem 1rem;
+  font-weight: 700;
+  background: var(--violet-700);
+  color: #fff;
+  cursor: pointer;
+}
+
+.newsletter-form button:hover { background: var(--violet-600); }
+
+/*  Footer  */
+.site-footer {
+  padding: var(--space-5) 0;
+  background: #fff;
+  border-top: 2px solid var(--violet-50);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+}
+.footer-title {
+  font-weight: 700;
+  color: var(--violet-700);
+  margin: 0 0 .75rem;
+}
+.footer-text,
+.footer-links { color: #333; margin: 0; }
+.footer-links a { display: block; padding: .25rem 0; color: #333; }
+.footer-links a:hover { color: var(--violet-700); }
+.footer-copy {
+  border-top: 2px solid var(--violet-50);
+  padding-top: var(--space-3);
+  font-size: .9rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/*  Responsivo  */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-side { grid-template-rows: auto; grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+  .newsletter__row { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .grid-3 { grid-template-columns: 1fr; }
+  .hero-side { grid-template-columns: 1fr; }
+  .header-search input { min-width: 140px; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
