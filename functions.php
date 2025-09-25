@@ -97,3 +97,57 @@ function theme_05_image_sizes_ui($sizes){ // Adiciona rótulos no seletor de tam
   return $sizes; // Retorna o array alterado
 } // Fim theme_05_image_sizes_ui
 add_filter('image_size_names_choose','theme_05_image_sizes_ui'); // Aplica no Admin
+
+// Tamanho fixo dos cards Recentes: 316x236 (crop)
+add_action('after_setup_theme', function () {
+  add_image_size('t05-recent-card', 316, 236, true);
+});
+
+// ==== Tamanhos de imagem da seção Categoria em Destaque ====
+// ==== Tamanhos de imagem da seção Categoria em Destaque ====
+add_action('after_setup_theme', function () {
+  add_image_size('t05-cat-feature', 531, 315, true);  // destaque (esquerda)
+  add_image_size('t05-cat-list',    187, 140, true);  // lista (direita) — mais largo, como no print
+});
+
+// ==== Customizer: cliente escolhe a categoria destacada ====
+add_action('customize_register', function(WP_Customize_Manager $wp_customize){
+  $wp_customize->add_section('t05_home_section', [
+    'title'    => __('Home – Categoria em Destaque','tema-05'),
+    'priority' => 30,
+  ]);
+  $wp_customize->add_setting('t05_featured_cat', [
+    'default'           => 0,
+    'sanitize_callback' => 'absint',
+    'transport'         => 'refresh',
+  ]);
+  $wp_customize->add_control(new WP_Customize_Category_Control(
+    $wp_customize,
+    't05_featured_cat_control',
+    [
+      'label'    => __('Escolha a categoria em destaque','tema-05'),
+      'section'  => 't05_home_section',
+      'settings' => 't05_featured_cat',
+    ]
+  ));
+});
+
+/** Controle de categorias para o Customizer */
+if ( class_exists('WP_Customize_Control') && ! class_exists('WP_Customize_Category_Control') ) {
+  class WP_Customize_Category_Control extends WP_Customize_Control {
+    public $type = 'dropdown-categories';
+    public function render_content() {
+      $dropdown = wp_dropdown_categories([
+        'name'              => '_customize-dropdown-categories-' . $this->id,
+        'echo'              => 0,
+        'show_option_none'  => __('— Selecionar —','tema-05'),
+        'option_none_value' => '0',
+        'selected'          => $this->value(),
+        'hide_empty'        => 0,
+      ]);
+      $dropdown = str_replace('<select', '<select ' . $this->get_link(), $dropdown);
+      printf('<label><span class="customize-control-title">%s</span>%s</label>',
+        esc_html($this->label), $dropdown);
+    }
+  }
+}

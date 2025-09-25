@@ -32,7 +32,7 @@ Então preciso dos códigos voltados para conforme eu preciso e está no print. 
   --space-3:1rem;       /* 16px */
   --space-4:1.5rem;     /* 24px */
   --shadow-1:0 6px 24px rgba(0,0,0,.06); /* sombra */
-  --wrap: 1520px;  /* largura máxima do site */
+  --wrap: 1600px;       /* largura máxima do site (alinha Hero e Recentes) */
   --page-pad:clamp(16px,3vw,32px); /* padding lateral responsivo */
 }
 
@@ -302,7 +302,7 @@ a:hover { color: var(--violet-600); }
 
 /* Hero principal (grid: 2 colunas) */
 /* ===== HERO (layout e estilos) ===== */
-.container { max-width: 1440px; }                  /* 140 + 775 + 531 + 2*32 = 1510 → margem de sobra */
+.container { max-width: 1600px; }                  /* alinhado ao pedido (tb afeta Recentes) */
 .hero-layout {                                     /* grid geral da hero */
   display: grid;                                   /* ativa grid */
   grid-template-columns: 140px 775px 531px;        /* sidebar | destaque | direita (px do Figma) */
@@ -373,9 +373,44 @@ a:hover { color: var(--violet-600); }
 }
 
 /* ===== Postagens Recentes (Tema 05) ===== */
+/* Ajustes pedidos: largura alinhada ao container (1600px), 
+   altura 550px em desktop, margem-top 80px, imagens 316x236, 
+   título #000 com 22px. */
 
-.home-recent {
-  margin: 80px;
+.home-recent{
+  margin-top: 80px;            /* somente topo = 80px */
+  height: 550px;               /* altura da seção em desktop */
+  display: grid;
+  grid-template-rows: auto 1fr;/* título + grid */
+}
+
+.home-recent .card--recent{ align-items: flex-start; } /* sai do center */
+
+.home-recent .card--recent .card__actions{
+  width: 316px;              /* mesma largura da imagem */
+  justify-content: flex-start !important; /* sai do center */
+}
+
+.home-recent .card--recent .post-tag--recent,
+.home-recent .card--recent .card__title,
+.home-recent .card--recent .card__actions{
+  width: 316px !important;               /* mesma largura da imagem */
+}
+
+/* força o título a ficar à esquerda mesmo com a classe --center */
+.home-recent .card--recent .card__title,
+.home-recent .card--recent .card__title.card__title--center{
+  text-align: left !important;
+}
+
+/* responsivo: quando a imagem vira 100%, os textos acompanham */
+@media (max-width: 800px){
+  .home-recent .card--recent{ align-items: stretch; }
+  .home-recent .card--recent .post-tag--recent,
+  .home-recent .card--recent .card__title,
+  .home-recent .card--recent .card__actions{
+    width: 100%;
+  }
 }
 
 .section__title{
@@ -390,9 +425,11 @@ a:hover { color: var(--violet-600); }
   display:grid;
   grid-template-columns: repeat(4, minmax(0,1fr));
   gap: 2rem;
+  align-items: stretch;        /* cards com alturas consistentes */
 }
 
 @media (max-width: 1024px){
+  .home-recent{ height:auto; } /* libera altura em telas menores */
   .cards-grid--recent{ grid-template-columns: repeat(2,1fr); }
 }
 @media (max-width: 640px){
@@ -401,18 +438,32 @@ a:hover { color: var(--violet-600); }
 
 .card--recent{
   border:1px solid #9B77DD;         /* borda roxa da identidade */
-  border-radius:10px;
   padding: 1.25rem;
   background:#fff;
   transition: box-shadow .2s ease, transform .2s ease;
+  align-items: flex-start;
+  display:flex; flex-direction:column; align-items:center; gap:14px;
 }
 .card--recent:hover{
   box-shadow: 0 10px 22px rgba(93,38,193,.12);
   transform: translateY(-2px);
 }
 
-.card__thumb{ display:block; margin-bottom:1rem; }
-.card__thumb img{ width:100%; height:auto; display:block; border-radius:6px; }
+
+/* Imagem com tamanho FIXO 316x236 */
+.card__thumb{ 
+  width:316px; 
+  height:236px; 
+  border-radius:6px; 
+  overflow:hidden; 
+  flex:0 0 auto; 
+}
+.card__thumb img{ 
+  width:100%; 
+  height:100%; 
+  object-fit:cover; 
+  display:block; 
+}
 
 .post-tag--recent{
   display:inline-flex;
@@ -423,6 +474,7 @@ a:hover { color: var(--violet-600); }
   text-transform:uppercase;
   color:#5D26C1;
   margin-bottom:.75rem;
+  align-self:flex-start;        /* alinha a etiqueta à esquerda do card */
 }
 
 /* “risco” (hífen grosso) antes do nome da categoria */
@@ -435,15 +487,22 @@ a:hover { color: var(--violet-600); }
   border-radius:2px;
 }
 
-.card__title{ margin: .25rem 0 1.0rem; font-weight:700; }
-.card__title--center{ text-align:center; }
-.card__title a{ color:#111; text-decoration:none; }
+.card__title{ 
+  margin: .25rem 0 1.0rem; 
+  font-weight:700; 
+  font-size:22px;           /* tamanho solicitado */
+  text-align:center; 
+}
+.card__title a{ color:#000; text-decoration:none; } /* cor solicitada */
 .card__title a:hover{ color:#5D26C1; }
 
 .card__actions{
+  margin-top:auto;          /* botão no rodapé do card */
   display:flex;
-  justify-content:center;  /* botão centralizado */
+  justify-content:center;   /* botão centralizado */
 }
+
+
 
 /* Botão já herda o padrão do tema; reforço do verde da identidade */
 .btn--primary{
@@ -552,3 +611,119 @@ a:hover { color: var(--violet-600); }
   .footer-grid { grid-template-columns: 1fr; }
 }
 
+/* ===== Categoria em Destaque — layout com 3 colunas fixas ===== */
+.home-cat{ margin-top:80px; }
+.home-cat__title{
+  color: var(--violet-700);
+  font-weight:700;
+  font-size:2rem;
+  margin:0 0 16px;
+}
+
+/* 3 colunas: 591 | 490 | 490. Gap calculado p/ fechar ~1600px */
+.home-cat__grid{
+  display:grid;
+  grid-template-columns: 591px 490px 490px;
+  column-gap:14px;          /* entre colunas */
+  row-gap:0;
+  border:1px solid var(--violet-500);
+  padding:20px;
+}
+
+/* como há só 2 filhos (esquerda/direita), a direita precisa ocupar 2 colunas */
+.cat-right{ grid-column: 2 / span 2; }
+
+/* === ESQUERDA (destaque) === */
+.cat-left__card{ 
+  display:flex; 
+  flex-direction:column; 
+  gap:14px; 
+  min-height:516px;         /* altura total do bloco */
+}
+.cat-left__thumb{
+  width:591px; 
+  height:320px;             /* altura da foto dentro dos 516px (ajuste fino) */
+  overflow:hidden; 
+  border-radius:10px;
+}
+.cat-left__thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* Alinhar textos/botão pelo início da imagem (591px) */
+.post-tag--cat,
+.cat-left__title,
+.cat-left__actions{ width:591px; }
+.post-tag--cat{
+  display:inline-flex; align-items:center; gap:.5rem;
+  color:var(--violet-700);
+  text-transform:uppercase;
+  font:600 11px/1.2 Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+}
+.post-tag--cat::before{ content:""; width:16px; height:6px; background:var(--violet-700); border-radius:2px; }
+.cat-left__title{ margin:6px 0 10px; font-weight:700; font-size:22px; }
+.cat-left__title a{ color:#000; text-decoration:none; }
+.cat-left__title a:hover{ color:var(--violet-700); }
+.cat-left__actions{ display:flex; justify-content:flex-start; }
+
+/* === DIREITA (2 colunas x 3 linhas), cada linha = 1/3 de 516px === */
+.cat-right{
+  display:grid;
+  grid-template-rows: repeat(3, 1fr); /* alturas iguais */
+  row-gap:14px;
+  height:516px;                        /* altura total do bloco direito */
+}
+
+/* cada linha possui 2 itens (490 | 490) e precisa ocupar toda a altura da linha */
+.cat-list__row{
+  display:grid;
+  grid-template-columns: 490px 490px;
+  column-gap:14px;
+  height:100%;
+  align-items:center;                  /* centraliza verticalmente a dupla */
+  padding-top:12px;
+  border-top:2px solid var(--violet-50);  /* divisor por linha */
+}
+.cat-list__row:first-child{ border-top:0; padding-top:0; }
+
+/* Item (490px de largura): imagem 187x140 + texto */
+.cat-list__item{
+  display:grid;
+  grid-template-columns: 187px 1fr;  /* imagem + conteúdo */
+  column-gap:12px;
+  align-items:center;
+}
+
+/* imagem fixa (combina com seu add_image_size 187x140) */
+.cat-list__thumb{ width:187px; height:140px; overflow:hidden; border-radius:8px; }
+.cat-list__thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* Conteúdo */
+.cat-list__content{ display:flex; flex-direction:column; gap:6px; }
+.cat-list__title{ margin:0; font-weight:700; font-size:18px; line-height:1.3; }
+.cat-list__title a{ color:#000; text-decoration:none; }
+.cat-list__title a:hover{ color:var(--violet-700); }
+.cat-list__actions{ margin-top:6px; display:flex; justify-content:flex-start; }
+
+/* evita quebrar a altura da linha por título gigante */
+.cat-list__title a{
+  display:-webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow:hidden;
+}
+
+/* Responsivo: mantém seu comportamento anterior */
+@media (max-width:1200px){
+  .home-cat__grid{ grid-template-columns: 1fr; }
+  .cat-right{ grid-column:auto; height:auto; grid-template-rows:none; }
+  .cat-left__thumb,
+  .post-tag--cat,
+  .cat-left__title,
+  .cat-left__actions{ width:100%; }
+}
+@media (max-width:900px){
+  .cat-list__row{ grid-template-columns: 1fr; height:auto; }
+}
+@media (max-width:600px){
+  .cat-list__item{ grid-template-columns: 1fr; align-items:start; }
+  .cat-list__thumb{ width:100%; height:200px; }
+}
