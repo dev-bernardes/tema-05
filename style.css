@@ -572,7 +572,6 @@ a:hover { color: var(--violet-600); }
 .footer__wrap{
   max-width: 1600px;
   margin: 0 auto;
-  padding: 0 24px;
 }
 
 .footer__grid{
@@ -883,7 +882,7 @@ a:hover { color: var(--violet-600); }
   margin-left: 45px;
 }
 
-.cat-archive{ padding: 0 24px; }
+.cat-archive { padding: 0 24px; }
 
 /* Layout com menu lateral fixo à esquerda */
 .cat-archive .cat-archive__layout{
@@ -893,7 +892,7 @@ a:hover { color: var(--violet-600); }
   display: grid;
   grid-template-columns: 260px 1fr;  /* menu + conteúdo */
   column-gap: 24px;
-  margin-top: 74px;                /* distância do topo */
+  margin-top: 74px;                  /* distância do topo */
 }
 
 .cat-archive .cat-content{ max-width: 1350px; }
@@ -918,25 +917,57 @@ a:hover { color: var(--violet-600); }
   display: grid;
   grid-template-columns: 700px 1fr;   /* 700 (destaque) + coluna lateral */
   column-gap: 24px;
-  border: 1px solid #9B77DD;
-  padding: 20px;
-  background: #fff;
+  border: 0;
+  padding: 0;
+  background: transparent;
 }
 
-/* Destaque */
-.cat-archive .card-feature{ display:flex; flex-direction:column; gap:12px; }
-.cat-archive .feature__thumb{ width:700px; height:400px; overflow:hidden; border-radius:8px; }
-.cat-archive .feature__thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+/* Coluna esquerda */
+.cat-archive .fold-left{ width:700px; }
+
+/* Card de destaque (consolidado) */
+.cat-archive .card-feature{
+  display:flex; 
+  flex-direction:column; 
+  gap:12px;
+  width:100%;
+  box-sizing:border-box;   /* inclui padding na largura */
+  overflow:hidden;         /* corta qualquer sobra da imagem nas bordas */
+  border:1px solid #9B77DD;
+  border-radius:8px;
+  padding:16px;
+  background:#fff;
+}
+
+/* Thumb do destaque — 100% do card */
+.cat-archive .feature__thumb{
+  width:100%;
+  height:400px;
+  border-radius:8px;
+  overflow:hidden;
+}
+.cat-archive .feature__thumb img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* Tag de categoria (uso global na página) */
 .cat-archive .post-tag--cat{
   display:inline-flex; align-items:center; gap:.5rem;
   color:#5D26C1; text-transform:uppercase; font:600 11px/1.2 Roboto, Arial, sans-serif;
 }
-.cat-archive .post-tag--cat::before{ content:""; width:16px; height:6px; background:#5D26C1; border-radius:2px; }
+.cat-archive .post-tag--cat::before{
+  content:""; width:16px; height:6px; background:#5D26C1; border-radius:2px;
+}
+
+/* Título do destaque */
 .cat-archive .feature__title{ margin:6px 0 8px; font-weight:800; font-size:24px; line-height:1.25; }
 .cat-archive .feature__title a{ color:#111; text-decoration:none; }
 .cat-archive .feature__title a:hover{ color:#5D26C1; }
 
-/* Botão */
+/* Botões */
 .cat-archive .btn{
   display:inline-flex !important;
   width:auto !important;
@@ -944,40 +975,100 @@ a:hover { color: var(--violet-600); }
 }
 .cat-archive .cat-list__content .btn,
 .cat-archive .card-feature .btn{
-  align-self:flex-start;   /* gride/flex não estica */
+  align-self:flex-start;   /* grid/flex não estica */
 }
 
-/* Lateral (3 linhas, 2 itens por linha) */
+/* Lateral (1 coluna com divisor entre itens) */
 .cat-archive .fold-right{ display:flex; flex-direction:column; }
 .cat-archive .fold-right .cat-list__item{
   display:grid; grid-template-columns:187px 1fr; column-gap:12px; align-items:center;
   padding: 0 0 16px 0; position:relative; margin-top: 10px;
+  border:0; /* garante sem borda */
 }
+/* divisor roxo APENAS entre itens */
 .cat-archive .fold-right .cat-list__item::after{
   content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background:#9B77DD;
 }
-.cat-archive .cat-list__row:last-child::after{ display:none; }
+.cat-archive .fold-right .cat-list__item:last-child::after{ display:none; }
 
 /* Item da lateral: thumb 187x140 + texto */
 .cat-archive .cat-list__item{
   display:grid; grid-template-columns: 187px 1fr; column-gap:12px; align-items:center;
 }
-.cat-archive .fold-right .cat-list__item:last-child::after{ display:none; }
 .cat-archive .cat-list__thumb{ width:187px; height:140px; overflow:hidden; border-radius:8px; }
 .cat-archive .cat-list__thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-/* ====== Grade inferior e paginação ====== */
+/* ====== Grade inferior (cards 12/página) ====== */
 .cat-archive .archive-grid{
-  margin-top:24px; padding:20px; border:1px solid #9B77DD; background:#fff;
-  display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;
+  margin-top:80px;
+  display:grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 colunas como no print */
+  gap:18px;
 }
-.cat-archive .post-card{ border:1px solid #EDE7FA; background:#fff; display:flex; flex-direction:column; }
-.cat-archive .post-card__thumb img{ width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
-.cat-archive .post-card__body{ padding:10px 12px 14px; }
-.cat-archive .post-card__title{ font-weight:700; font-size:18px; margin:0; }
+
+/* Card com borda individual (roxa) — consolidado */
+.cat-archive .post-card{
+  border:1px solid #9B77DD;
+  border-radius:6px;
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden; /* garante que a imagem não extrapole a borda */
+}
+.cat-archive .post-card__thumb img{
+  width:100%; aspect-ratio:16/9; object-fit:cover; display:block;
+}
+.cat-archive .post-card__body{
+  padding:12px 12px 16px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.cat-archive .post-card__title{ font-weight:800; font-size:18px; margin:0; line-height:1.25; }
 .cat-archive .post-card__title a{ color:#111; text-decoration:none; }
 .cat-archive .post-card__title a:hover{ color:#5D26C1; }
 
+/* Botão alinhado ao conteúdo do card */
+.cat-archive .post-card .btn{ align-self:flex-start; }
+
+/* Divisor acima da paginação */
+.cat-archive .archive-sep{
+  margin:26px 0 18px; height:1px; background:#9B77DD; opacity:1;
+}
+
+/* Paginação completa (prev | números | next) */
+.cat-archive .pagination-full{
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items:center;
+  gap:12px;
+  margin-bottom:40px;
+}
+.cat-archive .pag-prev{ justify-self:start; }
+.cat-archive .pag-next{ justify-self:end; }
+.cat-archive .pag-numbers{ text-align:center; }
+
+.cat-archive .pag-btn{
+  display:inline-block;
+  padding:8px 14px;
+  border:1px solid #9B77DD;
+  border-radius:6px;
+  text-decoration:none;
+  color:#5D26C1;
+  font-weight:600;
+}
+.cat-archive .pag-btn:hover{ background:#5D26C1; color:#fff; }
+.cat-archive .pag-btn.is-disabled{ opacity:.4; cursor:not-allowed; }
+
+.cat-archive .pag-numbers .page-numbers{
+  display:inline-block; min-width:36px;
+  padding:8px 10px; margin:0 4px; text-align:center;
+  border:1px solid #9B77DD; border-radius:6px; text-decoration:none; color:#5D26C1;
+}
+.cat-archive .pag-numbers .page-numbers.current,
+.cat-archive .pag-numbers .page-numbers:hover{
+  background:#5D26C1; color:#fff; border-color:#5D26C1;
+}
+
+/* (Opcional) suporte ao markup padrão .pagination, se existir no tema */
 .cat-archive .pagination-wrap{ margin:26px 0 40px; display:flex; justify-content:center; }
 .cat-archive .pagination .page-numbers{
   display:inline-block; min-width:36px; padding:8px 10px; margin:0 4px; text-align:center;
@@ -990,13 +1081,33 @@ a:hover { color: var(--violet-600); }
 @media (max-width:1200px){
   .cat-archive .cat-archive__layout{ grid-template-columns: 1fr; }
   .cat-archive .cat-aside{ order:-1; margin-bottom:18px; }
+  .cat-archive .archive-grid{ grid-template-columns: repeat(3, 1fr); }
 }
+
 @media (max-width:980px){
   .cat-archive .fold__grid{ grid-template-columns: 1fr; }
-  .cat-archive .feature__thumb{ width:100%; height:360px; }
+  .cat-archive .feature__thumb{ height:360px; }
+  .cat-archive .archive-grid{ grid-template-columns: repeat(2, 1fr); }
 }
+
 @media (max-width:640px){
   .cat-archive .archive-title{ font-size:32px; }
-  .cat-archive .cat-list__row{ grid-template-columns: 1fr; }
   .cat-archive .archive-grid{ grid-template-columns: 1fr; }
 }
+
+.cat-archive .cat-archive__layout > .archive-grid,
+.cat-archive .cat-archive__layout > .archive-sep,
+.cat-archive .cat-archive__layout > .pagination-full{
+  grid-column: 1 / -1;                /* ocupa aside + conteúdo */
+  justify-self: stretch;
+  max-width: calc(1570px);
+  margin: 0 auto;
+  margin-top: 80px;
+  padding: 0;
+  display: grid;
+  align-items: center;
+}
+
+.cat-archive .pag-prev{  justify-self: start; }
+.cat-archive .pag-numbers{ justify-self: center; text-align: center; }
+.cat-archive .pag-next{  justify-self: end; }
