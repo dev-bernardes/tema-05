@@ -151,3 +151,118 @@ if ( class_exists('WP_Customize_Control') && ! class_exists('WP_Customize_Catego
     }
   }
 }
+
+// === Home – segunda seção de categoria (opcional) ===
+add_action('customize_register', function(WP_Customize_Manager $wp_customize){
+
+  // Se a seção "t05_home_section" já existe, só anexamos novos controls
+  if ( ! $wp_customize->get_section('t05_home_section') ) {
+    $wp_customize->add_section('t05_home_section', [
+      'title'    => __('Home – Categoria em Destaque','tema-05'),
+      'priority' => 30,
+    ]);
+  }
+
+  // Title opcional para a 2ª seção (fallback usa o nome da categoria)
+  $wp_customize->add_setting('t05_featured_title_2', [
+    'default'           => '',
+    'sanitize_callback' => 'sanitize_text_field',
+  ]);
+  $wp_customize->add_control('t05_featured_title_2', [
+    'label'   => __('Título da 2ª seção (opcional)','tema-05'),
+    'section' => 't05_home_section',
+    'type'    => 'text',
+  ]);
+
+  // Categoria da 2ª seção
+  $wp_customize->add_setting('t05_featured_cat_2', [
+    'default'           => 0,
+    'sanitize_callback' => 'absint',
+  ]);
+  $wp_customize->add_control(new WP_Customize_Category_Control(
+    $wp_customize,
+    't05_featured_cat_2',
+    [
+      'label'    => __('Escolha a categoria da 2ª seção','tema-05'),
+      'section'  => 't05_home_section',
+      'settings' => 't05_featured_cat_2',
+    ]
+  ));
+});
+
+// --- Menus do rodapé
+add_action('after_setup_theme', function () {
+  register_nav_menus([
+    'footer_links' => __('Links do Rodapé', 'tema-05'),
+    'footer_cats'  => __('Categorias do Rodapé', 'tema-05'),
+  ]);
+});
+
+// --- Customizer: textos do rodapé (título das colunas e texto da marca)
+add_action('customize_register', function(WP_Customize_Manager $wp_customize){
+
+  if ( ! $wp_customize->get_section('t05_footer_section') ) {
+    $wp_customize->add_section('t05_footer_section', [
+      'title'    => __('Rodapé', 'tema-05'),
+      'priority' => 60,
+    ]);
+  }
+
+  // Texto abaixo/ao lado da logo
+  $wp_customize->add_setting('theme_05_footer_logo_text', [
+    'default'           => '',
+    'sanitize_callback' => 'wp_kses_post',
+  ]);
+  $wp_customize->add_control('theme_05_footer_logo_text', [
+    'label'   => __('Texto da coluna da marca', 'tema-05'),
+    'type'    => 'textarea',
+    'section' => 't05_footer_section',
+  ]);
+
+  // Títulos das colunas de menu
+  $wp_customize->add_setting('t05_footer_links_title', [
+    'default'           => __('Links Relevantes', 'tema-05'),
+    'sanitize_callback' => 'sanitize_text_field',
+  ]);
+  $wp_customize->add_control('t05_footer_links_title', [
+    'label'   => __('Título da coluna 2', 'tema-05'),
+    'type'    => 'text',
+    'section' => 't05_footer_section',
+  ]);
+
+  $wp_customize->add_setting('t05_footer_cats_title', [
+    'default'           => __('Categorias', 'tema-05'),
+    'sanitize_callback' => 'sanitize_text_field',
+  ]);
+  $wp_customize->add_control('t05_footer_cats_title', [
+    'label'   => __('Título da coluna 3', 'tema-05'),
+    'type'    => 'text',
+    'section' => 't05_footer_section',
+  ]);
+});
+
+add_action('customize_register', function(WP_Customize_Manager $wp_customize){
+  if ( ! $wp_customize->get_section('t05_footer_section') ) {
+    $wp_customize->add_section('t05_footer_section', [
+      'title'    => __('Rodapé', 'tema-05'),
+      'priority' => 60,
+    ]);
+  }
+
+  // Texto abaixo da logo
+  $wp_customize->add_setting('theme_05_footer_logo_text', [
+    'default'           => '',
+    'sanitize_callback' => 'wp_kses_post', // permite quebras de linha/básico
+  ]);
+  $wp_customize->add_control('theme_05_footer_logo_text', [
+    'label'   => __('Texto abaixo da logo', 'tema-05'),
+    'type'    => 'textarea',
+    'section' => 't05_footer_section',
+  ]);
+});
+
+add_action('after_setup_theme', function () {
+  add_image_size('t05-cat-feature', 700, 400, true);   // destaque (700px largura)
+  add_image_size('t05-cat-list',    187, 140, true);   // lista lateral (187x140)
+});
+
