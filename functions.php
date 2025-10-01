@@ -266,3 +266,11 @@ add_action('after_setup_theme', function () {
   add_image_size('t05-cat-list',    187, 140, true);   // lista lateral (187x140)
 });
 
+add_action('after_setup_theme', function(){
+  add_theme_support('post-thumbnails');
+  add_image_size('t05-single-hero', 680, 284, true);
+});
+
+add_action('after_setup_theme', function(){
+  add_image_size('t05-see-thumb', 344, 194, true); // recorte exato para o card 376
+});

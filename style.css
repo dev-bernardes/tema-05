@@ -575,7 +575,6 @@ a:hover { color: var(--violet-600); }
 }
 
 .footer__grid{
-  border-top: 1px solid #9B77DD;
   border-bottom: 1px solid #9B77DD;
   padding: 36px 0;
   display: grid;
@@ -882,7 +881,7 @@ a:hover { color: var(--violet-600); }
   margin-left: 45px;
 }
 
-.cat-archive { padding: 0 24px; }
+
 
 /* Layout com menu lateral fixo à esquerda */
 .cat-archive .cat-archive__layout{
@@ -898,7 +897,7 @@ a:hover { color: var(--violet-600); }
 .cat-archive .cat-content{ max-width: 1350px; }
 
 /* Aside/menu (igual Home) */
-.cat-archive .cat-aside{ margin-top: 28px; }
+.cat-archive .cat-aside2{ margin-top: 28px; margin-left: 0px !important; }
 .cat-archive .aside-menu ul{ list-style:none; margin:0; padding:0; }
 .cat-archive .aside-menu li{ border:1px solid #9B77DD; border-bottom:0; }
 .cat-archive .aside-menu li:first-child{ border-top-left-radius:6px; border-top-right-radius:6px; }
@@ -995,7 +994,7 @@ a:hover { color: var(--violet-600); }
 .cat-archive .cat-list__item{
   display:grid; grid-template-columns: 187px 1fr; column-gap:12px; align-items:center;
 }
-.cat-archive .cat-list__thumb{ width:187px; height:140px; overflow:hidden; border-radius:8px; }
+.cat-archive .cat-list__thumb{ width:187px; height:115px; overflow:hidden; border-radius:8px; }
 .cat-archive .cat-list__thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
 /* ====== Grade inferior (cards 12/página) ====== */
@@ -1031,7 +1030,7 @@ a:hover { color: var(--violet-600); }
 
 /* Divisor acima da paginação */
 .cat-archive .archive-sep{
-  margin:26px 0 18px; height:1px; background:#9B77DD; opacity:1;
+  margin:26px 0 18px; height:0px; background:#9B77DD; opacity:1;
 }
 
 /* Paginação completa (prev | números | next) */
@@ -1111,3 +1110,370 @@ a:hover { color: var(--violet-600); }
 .cat-archive .pag-prev{  justify-self: start; }
 .cat-archive .pag-numbers{ justify-self: center; text-align: center; }
 .cat-archive .pag-next{  justify-self: end; }
+
+/* ===== SINGLE: layout fixo, container 1600, grid determinístico ===== */
+body.single .cat-archive{
+  max-width:1600px;
+  margin:0 auto;
+}
+
+/* Grid com 5 trilhos: 188 | 24 | 680 | 136 | 544 */
+body.single .cat-archive__layout{
+  --gutter-share:136px;  /* espaço entre post e sidebar */
+  --rail:56px;           /* largura da barra de compartilhamento */
+  display:grid;
+  grid-template-columns: 188px 24px 680px var(--gutter-share) 544px;
+}
+
+/* Travas explícitas de coluna p/ cada bloco */
+body.single .cat-aside      { grid-column: 1; }
+body.single .post-main      { grid-column: 3; width:680px; }
+body.single .post-sidebar   { grid-column: 5; width:544px; margin-left: -60px; }
+
+/* Post (já estava alinhado a 680 x 284) */
+body.single .post-hero{ position:relative; width:680px; }
+body.single .post-thumb{ width:680px; margin:0 0 16px; }
+body.single .post-thumb img{
+  width:680px; height:284px; object-fit:cover; display:block;
+  border:1px solid var(--violet-500);
+}
+body.single .post-content{ width:680px; }
+
+/* === Barra vertical de compartilhamento (56px) centralizada no gutter ===
+   Fórmula: right = (rail - gutter)/2  → valor negativo "entra" no gutter */
+body.single .post-share{
+  position:absolute; top:-15px;
+  right: calc( (var(--rail) - var(--gutter-share)) / 2 );
+  width:var(--rail); /* 56px */
+  display:flex; flex-direction:column; gap:20px;
+  list-style:none; margin-left: 32px;
+}
+
+body.single .ps{
+  width:var(--rail); height:var(--rail);
+  display:grid; place-items:center; border-radius:50%;
+  color:#fff; text-decoration:none; font-weight:700;
+  background:#59C173;
+}
+body.single .ps--x{  background:#000; }
+body.single .ps--ig{ background:#C13584; }
+body.single .ps--wa{ background:#25D366; }
+body.single .ps--fb{ background:#1877F2; }
+
+/* ===== Sidebar — lista ===== */
+body.single .post-sidebar .side-list--only .cat-list__item{
+  display:flex; gap:16px; align-items:flex-start;
+  border-bottom:1px solid #9B77DD;
+  padding:12px; margin-bottom:18px;
+  width:544px; max-width:100%;
+}
+body.single .post-sidebar .side-list--only .cat-list__thumb img{
+  width:187px; height:115px; object-fit:cover; display:block; border-radius:8px;
+}
+body.single .post-sidebar .side-list--only .cat-list__title--16{
+  font-size:16px; line-height:1.35; margin:6px 0 10px;
+}
+
+/* ===== Responsividade ===== */
+/* 1) Container estreitando: reduz o gutter do share e a sidebar levemente */
+@media (max-width: 1500px){
+  body.single .cat-archive__layout{
+    --gutter-share:96px;            /* 96 entre post e sidebar */
+    grid-template-columns: 188px 24px 680px var(--gutter-share) 480px;
+  }
+}
+
+/* 2) Tablet largo: sidebar menor, gutter menor (share continua centralizado) */
+@media (max-width: 1320px){
+  body.single .cat-archive__layout{
+    --gutter-share:72px;
+    grid-template-columns: 188px 24px 680px var(--gutter-share) 420px;
+  }
+  body.single .post-sidebar .side-list--only .cat-list__item{ width:420px; }
+}
+
+/* 3) Tablet/phone: colapsa para uma coluna */
+@media (max-width: 1100px){
+  body.single .cat-archive{ padding:0 16px; }
+  body.single .cat-archive__layout{
+    grid-template-columns: 1fr;      /* empilha */
+  }
+  body.single .cat-aside,
+  body.single .post-main,
+  body.single .post-sidebar{
+    grid-column: auto;
+    width:100%;
+  }
+  body.single .post-hero,
+  body.single .post-thumb,
+  body.single .post-content{
+    width:100%;
+  }
+  body.single .post-thumb img{
+    width:100%; height:auto;
+  }
+  /* share vira linha abaixo da imagem */
+  body.single .post-share{
+    position:static; flex-direction:row; gap:10px; margin:8px 0 0;
+    width:auto;
+  }
+  body.single .post-sidebar .side-list--only .cat-list__item{ width:100%; }
+}
+
+/* ===== ADS: 680 x 200 no desktop ===== */
+body.single .ads-block{
+  width:680px;
+  height:200px;
+  max-width:100%;              /* segurança caso algo reduza a coluna */
+  background:#f5f5f5;          /* apenas placeholder visual; pode tirar */
+  border:1px solid var(--violet-500);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; color:#555;
+  margin:16px 0;
+  box-sizing:border-box;
+}
+
+/* Mobile/empilhado: ocupar a largura disponível */
+@media (max-width:1100px){
+  body.single .ads-block{
+    width:100%;
+    height:200px;              /* mantém a altura do mock; ajuste se quiser menor */
+  }
+}
+
+/* ===== Bloco final do single: Share + Autor (largura 680) ===== */
+body.single .post-end{
+  width:680px; max-width:100%;
+  display:grid; grid-template-columns: 120px 1fr; column-gap:16px;
+  margin:24px 0 12px;
+}
+
+/* Coluna de share inferior (caixa com borda) */
+body.single .post-end__share{
+  align-self:stretch;
+  border:1px solid #dcdcdc; border-radius:4px;
+  padding:12px 0; box-sizing:border-box;
+}
+body.single .post-end__rail{
+  list-style:none; margin:0; padding:0 0 0 0;
+  display:flex; flex-direction:column; gap:14px; align-items:center;
+}
+body.single .bps{
+  width:40px; height:40px; display:grid; place-items:center;
+  border-radius:50%; color:#fff; text-decoration:none; font-weight:700;
+  background:#6b6b6b;   /* base cinza para o bloco inferior (como no mock) */
+}
+body.single .bps--x{  background:#000; }
+body.single .bps--ig{ background:#C13584; }
+body.single .bps--wa{ background:#25D366; }
+body.single .bps--fb{ background:#1877F2; }
+
+/* Card do autor */
+body.single .post-author{
+  border:1px solid #e6e6e6; border-radius:4px; background:#fff;
+}
+body.single .post-author__inner{
+  display:grid; grid-template-columns: 160px 1fr; gap:20px;
+  padding:20px;
+}
+body.single .post-author__avatar{ display:flex; align-items:center; justify-content:center; }
+body.single .post-author__img{ width:140px; height:140px; border-radius:50%; object-fit:cover; }
+body.single .post-author__kicker{ font-size:14px; color:#555; margin:0 0 6px; font-weight:700; }
+body.single .post-author__name{ font-size:22px; margin:0 0 8px; }
+body.single .post-author__name a{ color:inherit; text-decoration:none; }
+body.single .post-author__bio{ margin:0; line-height:1.6; color:#444; }
+
+/* Responsivo: empilhar share + autor */
+@media (max-width:1100px){
+  body.single .post-end{
+    grid-template-columns: 1fr; row-gap:12px;
+    width:100%;
+  }
+  body.single .post-end__share{ padding:10px; }
+  body.single .post-end__rail{ flex-direction:row; justify-content:flex-start; gap:10px; }
+  body.single .post-author__inner{ grid-template-columns: 96px 1fr; }
+  body.single .post-author__img{ width:96px; height:96px; }
+}
+
+/* ===== VEJA TAMBÉM (full container 1600) ===== */
+.t05-seealso{
+  max-width:1600px;
+  margin: 40px auto 24px;
+  padding: 0 24px;
+  margin-bottom: 80px;
+}
+.t05-seealso .sa-title{
+  text-align:center;
+  font-size:36px;
+  line-height:1.2;
+  margin: 0 0 24px;
+}
+
+/* Grid 4 colunas (376) com gap 32 */
+.t05-seealso .sa-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 376px);
+  gap:32px;
+  justify-content:center; /* centraliza dentro dos 1600px */
+}
+
+/* Card 376 x 473 */
+.t05-seealso .sa-card{
+  width:376px; height:410px;
+  border:1px solid #e9e1ff;   /* leve borda */
+  background:#fff;
+  display:flex; flex-direction:column;
+  box-sizing:border-box;
+  overflow:hidden;
+  transition: box-shadow .2s ease;
+}
+.t05-seealso .sa-card:hover{
+  box-shadow:0 6px 20px rgba(0,0,0,.06);
+}
+
+/* Cabeçalho: categoria com “pílula” e detalhe */
+.t05-seealso .sa-head{ padding:14px 16px 0; }
+.t05-seealso .sa-cat{
+  font-size:12px; font-weight:700; color:#6b6b6b;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.t05-seealso .sa-cat i{
+  width:10px; height:4px; border-radius:4px; background:#6b42d8; display:inline-block;
+}
+
+/* Thumb ocupa a faixa central, com padding lateral (calc p/ 344px úteis) */
+.t05-seealso .sa-thumb{ display:block; padding:12px 16px 0; }
+.t05-seealso .sa-thumb img{
+  width:344px; height: 236px;; object-fit:cover; display:block; border-radius:4px;
+}
+
+/* Corpo: título + botão */
+.t05-seealso .sa-body{
+  padding:12px 16px 16px;
+  display:flex; flex-direction:column; gap:12px; margin-top:auto;
+}
+.t05-seealso .sa-title-post{
+  font-size:18px; line-height:1.35; margin:0;
+}
+.t05-seealso .sa-title-post a{ color:inherit; text-decoration:none; }
+.t05-seealso .sa-btn{
+  align-self:flex-start;                  /* o botão fica à esquerda do card */
+  display:flex;                           /* vira um flex container */
+  justify-content:center;                 /* centraliza horizontalmente o texto/ícone */
+  align-items:center;                     /* centraliza verticalmente */
+  padding:8px 12px;
+  width:100px;
+  background:var(--green-500);
+  color:#fff;
+  border-radius:6px;
+  font-size:14px;
+  font-weight: 600;
+  text-decoration:none;
+  text-align:center;                      /* redundante, mas ajuda se virar inline-block */
+}
+/* ===== Responsivo ===== */
+@media (max-width: 1500px){
+  .t05-seealso .sa-grid{ grid-template-columns: repeat(4, 1fr); }
+  .t05-seealso .sa-card{ width:auto; }
+  .t05-seealso .sa-thumb img{ width:100%; height:auto; }
+}
+@media (max-width: 1100px){
+  .t05-seealso{ padding:0 16px; }
+  .t05-seealso .sa-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 600px){
+  .t05-seealso .sa-grid{ grid-template-columns: 1fr; }
+}
+
+/* ===== Páginas Legais (Política, Termos, etc.) ===== */
+.legal-page { margin-top: 74px; }
+.legal-page .legal__wrap{
+  /* total = aside (260) + gap (24) + conteúdo (980) */
+  max-width: calc(260px + 24px + 980px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 260px 980px;
+  column-gap: 24px;
+  align-items: start;
+}
+
+/* Menu lateral (TÓPICO 1...N) */
+.legal-page .legal__aside{}
+.legal-page .legal__toc{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--violet-500);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.legal-page .legal__toc li { border-bottom: 1px solid var(--violet-500); }
+.legal-page .legal__toc li:last-child { border-bottom: 0; }
+.legal-page .legal__toc a{
+  display: block;
+  padding: 16px 14px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--violet-700);
+  text-decoration: none;
+}
+.legal-page .legal__toc a:hover{ background: var(--violet-50); }
+
+/* Cabeçalho da página */
+.legal-page .legal__title{
+  margin: 0 0 16px;
+  font: 700 32px/1.2 Roboto, Arial, sans-serif;
+  color: var(--violet-700);
+}
+
+/* Cartão do conteúdo (980px fixo) */
+.legal-page .legal__card{
+  border: 1px solid var(--violet-500);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: var(--shadow-1);
+  padding: 24px;
+}
+
+/* Intro (parágrafo inicial) */
+.legal-page .legal__intro{
+  margin: 0 0 18px;
+  color: #222;
+}
+
+/* Títulos de seção (H2) — “1. Title” do mock */
+.legal-page .legal__card h2{
+  font: 700 22px/1.25 Roboto, Arial, sans-serif;
+  margin: 18px 0 8px;
+  color: #111;
+}
+
+/* Texto padrão */
+.legal-page .legal__card p{ margin: 0 0 10px; color: #333; }
+
+/* Divisor entre seções (linha suave como no mock) */
+.legal-page .legal__sep{
+  height: 1px;
+  background: #e9e1ff;             /* roxo bem claro */
+  border: 0;
+  margin: 18px 0;
+}
+
+/* Compensa o scroll até as âncoras (header sticky) */
+.legal-page [id^="topico-"]{
+  scroll-margin-top: 90px;
+}
+
+/* Responsivo */
+@media (max-width: 1100px){
+  .legal-page .legal__wrap{
+    grid-template-columns: 1fr;
+    max-width: 980px;
+    padding: 0 16px;
+  }
+  .legal-page .legal__aside{ order: -1; margin: 0 0 16px; }
+  .legal-page .legal__card{ padding: 20px; }
+  .legal-page .legal__title{ font-size: 28px; }
+}
+
